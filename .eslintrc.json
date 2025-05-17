@@ -1,0 +1,21 @@
+{
+  "extends": ["eslint:recommended", "prettier"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2022
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "no-restricted-imports": ["error", "underscore"],
+    "eqeqeq": "error",
+    "comma-dangle": ["error", "never"],
+    "consistent-return": "error",
+    "no-unused-vars": "off",
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"]
+  }
+}
