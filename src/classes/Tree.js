@@ -5,14 +5,13 @@ class Tree {
     this.root = this.buildTree(array)
   }
 
-  buildTree(array) {
-    if (array.length === 0) return null
+  buildTree(array, start = 0, end = array.length - 1) {
+    if (start > end) return null
 
-    const uniqueArray = Array.from(new Set(array)).sort((a, b) => a - b)
-    const middleIndex = Math.floor(uniqueArray.length / 2)
-    const rootNode = new Node(uniqueArray[middleIndex])
-    rootNode.left = this.buildTree(uniqueArray.slice(0, middleIndex))
-    rootNode.right = this.buildTree(uniqueArray.slice(middleIndex + 1))
+    const middle = Math.floor((start + end) / 2)
+    const rootNode = new Node(array[middle])
+    rootNode.left = this.buildTree(array, start, middle - 1)
+    rootNode.right = this.buildTree(array, middle + 1, end)
 
     return rootNode
   }
