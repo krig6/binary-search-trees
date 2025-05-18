@@ -36,4 +36,29 @@ class Tree {
 
     return current
   }
+
+  deleteItem(value, current = this.root) {
+    if (current === null) return null
+
+    if (value < current.data) {
+      current.left = this.deleteItem(value, current.left)
+    } else if (value > current.data) {
+      current.right = this.deleteItem(value, current.right)
+    } else {
+      if (current.left === null && current.right === null) return null
+      if (current.left === null) return current.right
+      if (current.right === null) return current.left
+
+      let successor = current.right
+      while (successor.left !== null) {
+        successor = successor.left
+      }
+      current.data = successor.data
+      current.right = this.deleteItem(current.data, current.right)
+      return current
+    }
+
+    return current
+  }
 }
+
