@@ -16,4 +16,24 @@ class Tree {
 
     return rootNode
   }
+
+  insert(value, current = this.root) {
+    if (current === null) {
+      return new Node(value)
+    }
+
+    if (value === current.data) {
+      return current
+    }
+
+    if (value < current.data) {
+      current.left = this.insert(value, current.left)
+    }
+
+    if (value > current.data) {
+      current.right = this.insert(value, current.right)
+    }
+
+    return current
+  }
 }
