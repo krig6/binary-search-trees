@@ -96,5 +96,32 @@ class Tree {
     }
   }
 
+  preOrder(callback, current = this.root) {
+    if (current === null) return
+    if (!callback) throw new Error("Callback is required.")
+
+    callback(current.data)
+    this.preOrder(current.left)
+    this.preOrder(current.right)
+  }
+
+  inOrder(callback, current = this.root) {
+    if (current === null) return
+    if (!callback) throw new Error("Callback is required.")
+
+    this.inOrder(current.left)
+    callback(current.data)
+    this.inOrder(current.right)
+  }
+
+  postOrder(callback, current = this.root) {
+    if (current === null) return
+    if (!callback) throw new Error("Callback is required.")
+
+    this.postOrder(current.left)
+    this.postOrder(current.right)
+    callback(current.data)
+  }
+
 }
 
