@@ -16,7 +16,11 @@ class Tree {
     return rootNode
   }
 
-  insert(value, current = this.root) {
+  inner(value) {
+    this.root = this._insert(value, this.root)
+  }
+
+  _insert(value, current) {
     if (current === null) {
       return new Node(value)
     }
@@ -26,23 +30,27 @@ class Tree {
     }
 
     if (value < current.data) {
-      current.left = this.insert(value, current.left)
+      current.left = this._insert(value, current.left)
     }
 
     if (value > current.data) {
-      current.right = this.insert(value, current.right)
+      current.right = this._insert(value, current.right)
     }
 
     return current
   }
 
-  deleteItem(value, current = this.root) {
+  delete(value) {
+    this.root = this._deleteItem(value, this.root)
+  }
+
+  _deleteItem(value, current) {
     if (current === null) return null
 
     if (value < current.data) {
-      current.left = this.deleteItem(value, current.left)
+      current.left = this._deleteItem(value, current.left)
     } else if (value > current.data) {
-      current.right = this.deleteItem(value, current.right)
+      current.right = this._deleteItem(value, current.right)
     } else {
       if (current.left === null && current.right === null) return null
       if (current.left === null) return current.right
@@ -50,7 +58,7 @@ class Tree {
 
       let successor = this._findMin(current.right)
       current.data = successor.data
-      current.right = this.deleteItem(successor.data, current.right)
+      current.right = this._deleteItem(successor.data, current.right)
     }
 
     return current
