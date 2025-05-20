@@ -123,5 +123,22 @@ class Tree {
     callback(current.data)
   }
 
+
+  height(value) {
+    let targetNode = this.find(value)
+    if (targetNode === null) return null
+    return this._getHeight(targetNode)
+  }
+
+  _getHeight(node) {
+    if (node === null) return -1
+    let leftSubtreeHeight = this._getHeight(node.left)
+    let rightSubtreeHeight = this._getHeight(node.right)
+
+    return leftSubtreeHeight > rightSubtreeHeight
+      ? 1 + leftSubtreeHeight
+      : 1 + rightSubtreeHeight
+  }
+
 }
 
