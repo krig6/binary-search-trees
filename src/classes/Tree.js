@@ -48,16 +48,19 @@ class Tree {
       if (current.left === null) return current.right
       if (current.right === null) return current.left
 
-      let successor = current.right
-      while (successor.left !== null) {
-        successor = successor.left
-      }
+      let successor = this._findMin(current.right)
       current.data = successor.data
-      current.right = this.deleteItem(current.data, current.right)
-      return current
+      current.right = this.deleteItem(successor.data, current.right)
     }
 
     return current
+  }
+
+  _findMin(node) {
+    while (node.left !== null) {
+      node = node.left
+    }
+    return node
   }
 }
 
