@@ -70,5 +70,20 @@ class Tree {
     }
     return node
   }
-}
 
+  levelOrder(callback, current = this.root) {
+    if (current === null) return null
+    if (!callback) throw new Error("Callback is required.")
+
+    let queue = [current]
+
+    while (queue.length > 0) {
+      let item = queue.shift()
+      callback(item)
+
+      if (item.left !== null) queue.push(item.left)
+      if (item.right !== null) queue.push(item.right)
+    }
+  }
+
+}
