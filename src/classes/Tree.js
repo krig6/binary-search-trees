@@ -16,7 +16,7 @@ class Tree {
     return rootNode
   }
 
-  inner(value) {
+  insert(value) {
     this.root = this._insert(value, this.root)
   }
 
@@ -101,25 +101,25 @@ class Tree {
     if (!callback) throw new Error("Callback is required.")
 
     callback(current.data)
-    this.preOrder(current.left)
-    this.preOrder(current.right)
+    this.preOrder(callback, current.left)
+    this.preOrder(callback, current.right)
   }
 
   inOrder(callback, current = this.root) {
     if (current === null) return
     if (!callback) throw new Error("Callback is required.")
 
-    this.inOrder(current.left)
+    this.inOrder(callback, current.left)
     callback(current.data)
-    this.inOrder(current.right)
+    this.inOrder(callback, current.right)
   }
 
   postOrder(callback, current = this.root) {
     if (current === null) return
     if (!callback) throw new Error("Callback is required.")
 
-    this.postOrder(current.left)
-    this.postOrder(current.right)
+    this.postOrder(callback, current.left)
+    this.postOrder(callback, current.right)
     callback(current.data)
   }
 
