@@ -140,5 +140,21 @@ class Tree {
       : 1 + rightSubtreeHeight
   }
 
+  depth(value) {
+    let targetNode = this.find(value)
+    if (targetNode === null) return null
+    return this._getDepth(targetNode)
+  }
+
+  _getDepth(node, current = this.root, depth = 0) {
+    if (current === null) return depth
+    if (node.data === current.data) return depth
+    if (node.data < current.data) {
+      return this._getDepth(node, current.left, depth + 1)
+    } else if (node.data > current.data) {
+      return this._getDepth(node, current.right, depth + 1)
+    }
+  }
+
 }
 
