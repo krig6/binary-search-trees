@@ -171,4 +171,11 @@ class Tree {
     return 1 + Math.max(leftHeight, rightHeight)
   }
 
+  rebalance() {
+    let sortedArray = []
+    this.inOrder(value => sortedArray.push(value))
+    this.root = this.buildTree(sortedArray)
+    return this.root
+  }
+
 }
