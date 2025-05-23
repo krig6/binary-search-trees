@@ -46,30 +46,30 @@ class Tree {
   }
 
   delete(value) {
-    this.root = this._deleteItem(value, this.root)
+    this.root = this._delete(value, this.root)
   }
 
-  _deleteItem(value, current) {
+  _delete(value, current) {
     if (current === null) return null
 
     if (value < current.data) {
-      current.left = this._deleteItem(value, current.left)
+      current.left = this._delete(value, current.left)
     } else if (value > current.data) {
-      current.right = this._deleteItem(value, current.right)
+      current.right = this._delete(value, current.right)
     } else {
       if (current.left === null && current.right === null) return null
       if (current.left === null) return current.right
       if (current.right === null) return current.left
 
-      let successor = this._findMin(current.right)
+      let successor = this._getMinNode(current.right)
       current.data = successor.data
-      current.right = this._deleteItem(successor.data, current.right)
+      current.right = this._delete(successor.data, current.right)
     }
 
     return current
   }
 
-  _findMin(node) {
+  _getMinNode(node) {
     while (node.left !== null) {
       node = node.left
     }
