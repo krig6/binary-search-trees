@@ -156,5 +156,19 @@ class Tree {
     }
   }
 
-}
+  isBalanced(current = this.root) {
+    if (current === null) return true
+    let balanceHeight = this._checkBalanceAndHeight(current)
+    return balanceHeight !== -1
+  }
 
+  _checkBalanceAndHeight(node) {
+    if (node === null) return 0
+    let leftHeight = this._checkBalanceAndHeight(node.left)
+    let rightHeight = this._checkBalanceAndHeight(node.right)
+    if (leftHeight === -1 || rightHeight === -1) return -1
+    if (Math.abs(leftHeight - rightHeight) > 1) return -1
+    return 1 + Math.max(leftHeight, rightHeight)
+  }
+
+}
