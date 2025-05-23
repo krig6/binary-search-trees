@@ -5,7 +5,12 @@ class Tree {
     this.root = this.buildTree(array)
   }
 
-  buildTree(array, start = 0, end = array.length - 1) {
+  buildTree(array, start = 0, end = null) {
+    if (end === null) {
+      array = Array.from(new Set(array)).sort((a, b) => a - b)
+      end = array.length - 1
+    }
+
     if (start > end) return null
 
     const middle = Math.floor((start + end) / 2)
