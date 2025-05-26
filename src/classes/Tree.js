@@ -169,22 +169,26 @@ class Tree {
     }
 
     return results
+
   }
 
-  height(value) {
-    let targetNode = this.find(value)
-    if (targetNode === null) return null
-    return this._getHeight(targetNode)
+  height(searchValue) {
+    if (searchValue === undefined || searchValue === null || searchValue === "")
+      throw new Error("Value cannot be empty.")
+    if (typeof searchValue !== 'string' && typeof searchValue !== 'number')
+      throw new Error("Value must be a string or number.")
+
+    let targetNode = this.find(searchValue)
+    if (targetNode === null) return -1
+
+    return this._calculateHeight(targetNode)
   }
 
-  _getHeight(node) {
-    if (node === null) return -1
-    let leftSubtreeHeight = this._getHeight(node.left)
-    let rightSubtreeHeight = this._getHeight(node.right)
-
-    return leftSubtreeHeight > rightSubtreeHeight
-      ? 1 + leftSubtreeHeight
-      : 1 + rightSubtreeHeight
+  _calculateHeight(targetNode) {
+    if (targetNode === null) return -1
+    let leftSubtreeHeight = this._calculateHeight(targetNode.left)
+    let rightSubtreeHeight = this._calculateHeight(targetNode.right)
+    return 1 + Math.max(leftSubtreeHeight, rightSubtreeHeight)
   }
 
   depth(value) {
