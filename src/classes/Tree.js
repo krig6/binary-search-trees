@@ -105,14 +105,24 @@ class Tree {
     return results
   }
 
-  find(value, current = this.root) {
-    if (current === null) return null
-    if (value === current.data) return current
-    if (value < current.data) {
-      return this.find(value, current.left)
-    } else {
-      return this.find(value, current.right)
+  find(searchValue, currentNode = this.root) {
+    if (searchValue === undefined || searchValue === null || searchValue === "" || searchValue === '')
+      throw new Error("Value cannot be empty.")
+    if (typeof searchValue !== 'string' && typeof searchValue !== 'number')
+      throw new Error("Value must be a string or number.")
+
+    if (currentNode === null) return null
+
+    while (currentNode !== null) {
+      if (searchValue === currentNode.data) return currentNode
+      if (searchValue < currentNode.data) {
+        currentNode = currentNode.left
+      } else {
+        currentNode = currentNode.right
+      }
     }
+
+    return null
   }
 
   preOrder(callback, current = this.root) {
