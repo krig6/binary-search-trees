@@ -125,33 +125,51 @@ class Tree {
     return null
   }
 
-  preOrder(callback, current = this.root) {
-    if (current === null) return
-    if (!callback) throw new Error("Callback is required.")
+  preOrder(callback, startingNode = this.root, results = []) {
+    if (typeof callback !== 'function') throw new Error("Callback must be a function")
+    if (startingNode === null) return results
 
-    callback(current.data)
-    this.preOrder(callback, current.left)
-    this.preOrder(callback, current.right)
+    const callbackResult = callback(startingNode.data)
+    if (callbackResult !== undefined) {
+      results.push(callbackResult)
+    }
+
+    this.preOrder(callback, startingNode.left, results)
+    this.preOrder(callback, startingNode.right, results)
+
+    return results
   }
 
-  inOrder(callback, current = this.root) {
-    if (current === null) return
-    if (!callback) throw new Error("Callback is required.")
+  inOrder(callback, startingNode = this.root, results = []) {
+    if (typeof callback !== 'function') throw new Error("Callback must be a function")
+    if (startingNode === null) return results
 
-    this.inOrder(callback, current.left)
-    callback(current.data)
-    this.inOrder(callback, current.right)
+    this.inOrder(callback, startingNode.left, results)
+
+    const callbackResult = callback(startingNode.data)
+    if (callbackResult !== undefined) {
+      results.push(callbackResult)
+    }
+
+    this.inOrder(callback, startingNode.right, results)
+
+    return results
   }
 
-  postOrder(callback, current = this.root) {
-    if (current === null) return
-    if (!callback) throw new Error("Callback is required.")
+  postOrder(callback, startingNode = this.root, results = []) {
+    if (typeof callback !== 'function') throw new Error("Callback must be a function")
+    if (startingNode === null) return results
 
-    this.postOrder(callback, current.left)
-    this.postOrder(callback, current.right)
-    callback(current.data)
+    this.postOrder(callback, startingNode.left, results)
+    this.postOrder(callback, startingNode.right, results)
+
+    const callbackResult = callback(startingNode.data)
+    if (callbackResult !== undefined) {
+      results.push(callbackResult)
+    }
+
+    return results
   }
-
 
   height(value) {
     let targetNode = this.find(value)
