@@ -76,19 +76,33 @@ class Tree {
     return node
   }
 
-  levelOrder(callback, current = this.root) {
-    if (current === null) return null
-    if (!callback) throw new Error("Callback is required.")
+  levelOrder(callback, startingNode) {
+    let results = []
+    let queueIndex = 0
 
-    let queue = [current]
-
-    while (queue.length > 0) {
-      let item = queue.shift()
-      callback(item)
-
-      if (item.left !== null) queue.push(item.left)
-      if (item.right !== null) queue.push(item.right)
+    if (startingNode === null) {
+      return []
+    } else if (startingNode === undefined) {
+      startingNode = this.root
     }
+    if (typeof callback !== 'function') throw new Error("Callback must be a function")
+
+    let nodeQueue = [startingNode]
+
+    while (queueIndex < nodeQueue.length) {
+      let currentNode = nodeQueue[queueIndex]
+
+      const callbackResult = callback(currentNode)
+      if (callbackResult !== undefined) {
+        results.push(callbackResult)
+      }
+
+      if (currentNode.left !== null) nodeQueue.push(currentNode.left)
+      if (currentNode.right !== null) nodeQueue.push(currentNode.right)
+      queueIndex++
+    }
+
+    return results
   }
 
   find(value, current = this.root) {
