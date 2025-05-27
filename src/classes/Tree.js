@@ -233,9 +233,8 @@ class Tree {
   }
 
   rebalance() {
-    let sortedArray = []
-    this.inOrder(value => sortedArray.push(value))
-    this.root = this.buildTree(sortedArray)
+    let sortedValues = this.inOrder(value => value)
+    this.root = this.buildTree(sortedValues)
     return this.root
   }
 
