@@ -21,52 +21,92 @@ class Tree {
     return rootNode
   }
 
-  insert(value) {
-    this.root = this._insert(value, this.root)
+  insert(inputValue) {
+    let validatedValue = this._validateValue(inputValue)
+    let insertResult = this._insert(validatedValue, this.root)
+
+    if (insertResult === false) {
+      throw new Error("Duplicate value.")
+    }
+
+    this.root = insertResult
   }
 
-  _insert(value, current) {
-    if (current === null) {
-      return new Node(value)
+  _insert(valueToInsert, currentNode) {
+    if (currentNode === null) {
+      return new Node(valueToInsert)
     }
-
-    if (value === current.data) {
-      return current
-    }
-
-    if (value < current.data) {
-      current.left = this._insert(value, current.left)
-    }
-
-    if (value > current.data) {
-      current.right = this._insert(value, current.right)
-    }
-
-    return current
-  }
-
-  delete(value) {
-    this.root = this._delete(value, this.root)
-  }
-
-  _delete(value, current) {
-    if (current === null) return null
-
-    if (value < current.data) {
-      current.left = this._delete(value, current.left)
-    } else if (value > current.data) {
-      current.right = this._delete(value, current.right)
+    if (valueToInsert < currentNode.data) {
+      currentNode.left = this._insert(valueToInsert, currentNode.left)
+    } else if (valueToInsert > currentNode.data) {
+      currentNode.right = this._insert(valueToInsert, currentNode.right)
     } else {
-      if (current.left === null && current.right === null) return null
-      if (current.left === null) return current.right
-      if (current.right === null) return current.left
-
-      let successor = this._getMinNode(current.right)
-      current.data = successor.data
-      current.right = this._delete(successor.data, current.right)
+      return false
     }
 
-    return current
+    return currentNode
+  }
+
+  _validateValue(value) {
+    if (value === undefined || value === null) {
+      throw new Error("Value cannot be null or undefined.")
+    }
+
+    if (typeof value === 'number') return value
+
+    if (typeof value === 'string') {
+      let trimmedValue = value.trim()
+      if (trimmedValue === "") {
+        throw new Error("Value cannot be empty.")
+      }
+      const numeric = Number(trimmedValue)
+      if (isNaN(numeric)) {
+        throw new Error("Value must be a valid number.")
+      }
+      return numeric
+    }
+    throw new Error("Value must be a number or a string.")
+  }
+
+  delete(deleteValue) {
+    let validatedValue = this._validateValue(deleteValue)
+    const { node, deleted } = this._delete(validatedValue, this.root)
+
+    if (!deleted) {
+      throw new Error("Value not found.")
+    }
+
+    this.root = node
+  }
+
+  _delete(valueToDelete, currentNode) {
+    if (currentNode === null) return { node: null, deleted: false }
+
+    if (valueToDelete < currentNode.data) {
+      const { node, deleted } = this._delete(valueToDelete, currentNode.left)
+      currentNode.left = node
+      return { node: currentNode, deleted }
+    } else if (valueToDelete > currentNode.data) {
+      const { node, deleted } = this._delete(valueToDelete, currentNode.right)
+      currentNode.right = node
+      return { node: currentNode, deleted }
+    } else {
+      if (currentNode.left === null && currentNode.right === null) {
+        return { node: null, deleted: true }
+      }
+      if (currentNode.left === null) {
+        return { node: currentNode.right, deleted: true }
+      }
+      if (currentNode.right === null) {
+        return { node: currentNode.left, deleted: true }
+      }
+
+      let successor = this._getMinNode(currentNode.right)
+      currentNode.data = successor.data
+      const { node: newRight } = this._delete(successor.data, currentNode.right)
+      currentNode.right = newRight
+      return { node: currentNode, deleted: true }
+    }
   }
 
   _getMinNode(node) {
@@ -105,21 +145,12 @@ class Tree {
     return results
   }
 
-  find(searchValue, currentNode = this.root) {
-    if (searchValue === undefined || searchValue === null || searchValue === "" || searchValue === '')
-      throw new Error("Value cannot be empty.")
-    if (typeof searchValue !== 'string' && typeof searchValue !== 'number')
-      throw new Error("Value must be a string or number.")
-
-    if (currentNode === null) return null
+  find(findValue, currentNode = this.root) {
+    const validatedValue = this._validateValue(findValue)
 
     while (currentNode !== null) {
-      if (searchValue === currentNode.data) return currentNode
-      if (searchValue < currentNode.data) {
-        currentNode = currentNode.left
-      } else {
-        currentNode = currentNode.right
-      }
+      if (validatedValue === currentNode.data) return currentNode
+      currentNode = validatedValue < currentNode.data ? currentNode.left : currentNode.right
     }
 
     return null
@@ -172,13 +203,10 @@ class Tree {
 
   }
 
-  height(searchValue) {
-    if (searchValue === undefined || searchValue === null || searchValue === "")
-      throw new Error("Value cannot be empty.")
-    if (typeof searchValue !== 'string' && typeof searchValue !== 'number')
-      throw new Error("Value must be a string or number.")
+  height(findValue) {
+    const validatedValue = this._validateValue(findValue)
 
-    let targetNode = this.find(searchValue)
+    let targetNode = this.find(validatedValue)
     if (targetNode === null) return -1
 
     return this._calculateHeight(targetNode)
@@ -191,13 +219,10 @@ class Tree {
     return 1 + Math.max(leftSubtreeHeight, rightSubtreeHeight)
   }
 
-  depth(searchValue) {
-    if (searchValue === undefined || searchValue === null || searchValue === "")
-      throw new Error("Value cannot be empty.")
-    if (typeof searchValue !== 'string' && typeof searchValue !== 'number')
-      throw new Error("Value must be a string or number.")
+  depth(findValue) {
+    const validatedValue = this._validateValue(findValue)
 
-    return this._calculateDepth(searchValue)
+    return this._calculateDepth(validatedValue)
   }
 
   _calculateDepth(searchValue, current = this.root, depth = 0) {
@@ -239,3 +264,4 @@ class Tree {
   }
 
 }
+
