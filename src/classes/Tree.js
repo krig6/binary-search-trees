@@ -211,19 +211,25 @@ class Tree {
     return -1
   }
 
-  isBalanced(current = this.root) {
-    if (current === null) return true
-    let balanceHeight = this._checkBalanceAndHeight(current)
+  isBalanced(node = this.root) {
+    if (node === null) return true
+    let balanceHeight = this._checkBalanceHeight(node)
     return balanceHeight !== -1
   }
 
-  _checkBalanceAndHeight(node) {
+  _checkBalanceHeight(node) {
     if (node === null) return 0
-    let leftHeight = this._checkBalanceAndHeight(node.left)
-    let rightHeight = this._checkBalanceAndHeight(node.right)
-    if (leftHeight === -1 || rightHeight === -1) return -1
-    if (Math.abs(leftHeight - rightHeight) > 1) return -1
-    return 1 + Math.max(leftHeight, rightHeight)
+    let leftSubtreeHeight = 0
+    let rightSubtreeHeight = 0
+    if (node.left !== null) {
+      leftSubtreeHeight = this._checkBalanceHeight(node.left)
+    }
+    if (node.right !== null) {
+      rightSubtreeHeight = this._checkBalanceHeight(node.right)
+    }
+    if (leftSubtreeHeight === -1 || rightSubtreeHeight === -1) return -1
+    if (Math.abs(leftSubtreeHeight - rightSubtreeHeight) > 1) return -1
+    return 1 + Math.max(leftSubtreeHeight, rightSubtreeHeight)
   }
 
   rebalance() {
