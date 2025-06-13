@@ -1,7 +1,7 @@
 {
-  "name": "my-webpack-template",
+  "name": "binary-search-trees",
   "version": "1.0.0",
-  "description": "Welcome to the Webpack Template! 🎉 This template provides a solid foundation for starting a modern JavaScript project with Webpack, including development and production setups.",
+  "description": "A binary search tree (BST) is a hierarchical data structure where each node has up to two children, with left children containing smaller values and right children larger values, enabling efficient search, insertion, and deletion.",
   "type": "module",
   "main": "index.js",
   "scripts": {
